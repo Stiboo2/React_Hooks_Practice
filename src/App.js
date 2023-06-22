@@ -1,48 +1,71 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import memberS from "./membersData";
 
-import Login from "./components/Login/Login";
-import Home from "./components/Home/Home";
-import MainHeader from "./components/MainHeader/MainHeader";
-import AuthContext from "./store/auth-context";
+const App = () => {
+  const [cart, setCart] = useState([]);
 
-function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  /*   const fetchCartData = async () => {
+    try {
+      console.log("inside fetchCartData function");
+      const response = await fetch(
+        "https://church-e98c4-default-rtdb.firebaseio.com/cart.json"
+      );
+
+      if (!response.ok) {
+        throw new Error("Could not fetch cart data!");
+      }
+
+      const data = await response.json();
+      console.log("cart data Fetched success.........");
+
+      return data || [];
+    } catch (error) {
+      return [];
+    }
+  };
 
   useEffect(() => {
-    const storedUserLoggedInInfo = localStorage.getItem("isLoggedIn");
+    const fetchData = async () => {
+      const cartData = await fetchCartData();
+      console.log("cartData", cartData);
+      setCart(new Map(cartData.map((item) => [item.id, item])));
+    };
 
-    if (storedUserLoggedInInfo === "1") {
-      setIsLoggedIn(true);
-    }
+    fetchData();
   }, []);
-  const loginHandler = (email, password) => {
-    // We should of course check email and password
-    // But it's just a dummy/ demo anyways
-    localStorage.setItem("isLoggedIn", "1");
-    setIsLoggedIn(true);
-  };
 
-  const logoutHandler = () => {
-    localStorage.removeItem("isLoggedIn");
-    setIsLoggedIn(false);
-  };
+  useEffect(() => {
+    console.log("cart", cart);null
+  }, [cart]);
+ */
+
+  ////  _________________________________sendinf__________
+
+  useEffect(() => {
+    const sendCartData = async () => {
+      const response = await fetch(
+        "https://church-e98c4-default-rtdb.firebaseio.com/cart.json",
+        {
+          method: "PUT",
+          body: JSON.stringify(memberS),
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Sending cart data failed.");
+      }
+      console.log("cart data success");
+      console.log(cart);
+    };
+    console.log("knock knock ");
+    // Rest of your code...
+    sendCartData().catch((error) => {});
+  }, [cart]);
 
   return (
-    <React.Fragment>
-      <AuthContext.Provider
-        value={{
-          isLoggedIn: isLoggedIn,
-          onLogout: logoutHandler
-        }}
-      >
-        <MainHeader/>
-        <main>
-          {!isLoggedIn && <Login onLogin={loginHandler} />}
-          {isLoggedIn && <Home onLogout={logoutHandler} />}
-        </main>
-      </AuthContext.Provider>
-    </React.Fragment>
+    <div>
+      <h2>Let's get started!</h2>
+    </div>
   );
-}
+};
 
 export default App;
