@@ -44,7 +44,7 @@ const App = () => {
   useEffect(() => {
     const sendCartData = async () => {
       const response = await fetch(
-        "https://church-e98c4-default-rtdb.firebaseio.com/cart.json",
+        "https://tac-capetown-default-rtdb.firebaseio.com/capetown.json",
         {
           method: "PUT",
           body: JSON.stringify(memberS),
